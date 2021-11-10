@@ -1,0 +1,19 @@
+# Data models for Domain objects
+
+
+* Recipe :
+		- name (String)
+		- description (String)
+		- instructions (String)
+		- ingredients (List<Ingredient>)
+		- timeToCook  (double)
+		- mealType  (MealType)
+
+
+* Ingredient :
+		- name  (String)
+		- amount  (double)
+
+
+* MealType :
+		- name  (String)
