@@ -96,7 +96,8 @@ class RecipeController {
     //A RESTFUL search API endpoint
     def search(String q, Integer max) {
         if(q) {
-            respond recipeService.findByNameLike("%${q}%".toString(), [max: Math.min( max ?: 10, 100)])
+            List<Recipe> recipes = recipeService.findByNameLike("%$q%", [max: Math.min(max ?: 10, 100)])
+             respond recipes
         }
         else {
             respond([])

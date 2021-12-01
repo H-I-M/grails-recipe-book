@@ -20,6 +20,7 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"com.bertramlabs.asset-pipeline"
+apply plugin: 'codenarc'
 
 repositories {
     maven { url "https://repo.grails.org/grails/core" }
@@ -113,4 +114,11 @@ tasks.withType(Test) {
 assets {
     minifyJs = true
     minifyCss = true
+}
+
+codenarc {
+    toolVersion = '2.2.0'
+    configFile = file("${rootProject.projectDir}/codenarc/rules.groovy")
+    reportFormat = 'html'
+    ignoreFailures = true
 }

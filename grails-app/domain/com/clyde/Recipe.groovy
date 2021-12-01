@@ -14,7 +14,7 @@ class Recipe {
 		description size: 5..300, blank: false
 		instructions blank: false, maxSize: 1000
 		time min: 0d
-		hasMany nullable: false
+		hasMany nullable: false // FIXME incorrect
     }
 	
 	// return the recipe name instead of the class name.

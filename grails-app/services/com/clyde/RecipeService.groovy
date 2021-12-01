@@ -15,4 +15,6 @@ interface RecipeService {
 
     Recipe save(Recipe recipe)
 
+    List<Recipe> findByNameLike(String name, Map args)
+
 }

@@ -15,10 +15,9 @@ class RecipeControllerSpec extends HibernateSpec implements ControllerUnitTest<R
 
     def populateValidParams(params) {
         assert params != null
-
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        params.name = 'Recipe ' + UUID.randomUUID().toString()
+        params.description = 'Description'
+        params.instructions = 'Instructions'
     }
 
     void "Test the index action returns the correct model"() {
@@ -51,7 +50,7 @@ class RecipeControllerSpec extends HibernateSpec implements ControllerUnitTest<R
         controller.save(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/recipe/index'
+        response.redirectedUrl == '/recipe'
         flash.message != null
     }
 
@@ -155,7 +154,7 @@ class RecipeControllerSpec extends HibernateSpec implements ControllerUnitTest<R
         controller.update(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/recipe/index'
+        response.redirectedUrl == '/recipe'
         flash.message != null
     }
 
@@ -205,7 +204,7 @@ class RecipeControllerSpec extends HibernateSpec implements ControllerUnitTest<R
         controller.delete(null)
 
         then:"A 404 is returned"
-        response.redirectedUrl == '/recipe/index'
+        response.redirectedUrl == '/recipe'
         flash.message != null
     }
 
@@ -221,12 +220,14 @@ class RecipeControllerSpec extends HibernateSpec implements ControllerUnitTest<R
         controller.delete(2)
 
         then:"The user is redirected to index"
-        response.redirectedUrl == '/recipe/index'
+        response.redirectedUrl == '/recipe'
         flash.message != null
     }
 
     void 'test the search action finds results'() {
         given:
+        request.addHeader 'Accept', JSON_CONTENT_TYPE
+        request.format = 'json'
         controller.recipeService = Stub(RecipeService) {
             findByNameLike(_, _) >> [new Recipe(name: "Apple pie", description: "Yummy pie", instructions: "Apples and pie", time: 60)]
         }
@@ -234,9 +235,12 @@ class RecipeControllerSpec extends HibernateSpec implements ControllerUnitTest<R
         controller.search('pp', 10)
 
         then: 'The response is correct'
+        response.status == 200
+        response.contentType.contains(JSON_CONTENT_TYPE)
         response.json.size() == 1
-        response.json[0].name == 'Apple'
+        response.json[0].name == 'Apple pie'
     }
+
 }
 
 
